@@ -5,11 +5,16 @@ from bot.settings import (
     PREFIX , 
     COGS , 
     WAVELINK_PASS , 
-    WAVELINK_URI
+    WAVELINK_URI,
+    USER_FILE,
+    ADMINS,
+    CHALLENGE_FILE
 )
 import os
 import wavelink
 from bot.utils.music_player import MusicPlayer
+from bot.utils.database import UserDatabase , ChallengeDatabase
+
 
 
 class DevX(commands.Bot):
@@ -17,13 +22,31 @@ class DevX(commands.Bot):
         super().__init__(command_prefix=PREFIX , intents=discord.Intents.all())
         self.music_player = MusicPlayer()
         self.user_playing = {}
+        
 
     async def on_ready(self) -> None:
 
         self.remove_command("help")
         await load_cog()
-        print(f"Logged in as {self.user}")
+
+        self.user_conn = UserDatabase(USER_FILE)
+        await self.user_conn.init()
         
+        self.challenge_conn = ChallengeDatabase(CHALLENGE_FILE)
+        await self.challenge_conn.init()
+
+        synced = await bot.tree.sync()
+
+        if len(synced)>0:
+            for cmd in synced:
+                print(f"Synced {cmd}")
+
+            print(f"Synced {len(synced)} commands globally!")
+        else:
+            print("No slash commands to register.")
+
+        print(f"Logged in as {self.user}")
+            
     async def setup_hook(self):
         
         nodes = [wavelink.Node(uri=WAVELINK_URI, password=WAVELINK_PASS , inactive_player_timeout=60)]
@@ -88,25 +111,11 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             await bot_voice_channel.guild.voice_client.disconnect()
             
                 
-            
-@bot.hybrid_command()
-async def sync(ctx: commands.Context):
-
-    synced = await bot.tree.sync()
-
-    if len(synced)>0:
-        for cmd in synced:
-            await ctx.send(f"Synced {cmd}")
-
-        await ctx.send(f"Synced {len(synced)}commands globally!")
-    else:
-        await ctx.send("No slash commands to register.")
-
     
 @bot.hybrid_command()
 async def shutdown(ctx : commands.Context):
     
-    if str(ctx.author.id) not in ["1288870270664179815"]:
+    if int(ctx.author.id) not in ADMINS:
         
         return await ctx.send(":( You need to be the developer of the bot to shut it down!")
     
