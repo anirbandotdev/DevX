@@ -22,7 +22,7 @@ plugins:
 
 lavalink:
   plugins:
-      - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.1"
+      - dependency: "dev.lavalink.youtube:youtube-plugin:1.13.2"
         repository: "https://maven.lavalink.dev/releases"
 
 #    - dependency: "com.github.example:example-plugin:1.0.0" # required, the coordinates of your plugin
