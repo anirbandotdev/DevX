@@ -8,6 +8,7 @@ from .play import Play
 from .queue import Queue
 from .volume import Volume
 from .skip import Skip
+from .muffle import Muffle
 
 async def setup(bot : DevX):
     await bot.add_cog(Daycore(bot))
@@ -19,4 +20,5 @@ async def setup(bot : DevX):
     await bot.add_cog(Queue(bot))
     await bot.add_cog(Skip(bot))
     await bot.add_cog(Volume(bot))
+    await bot.add_cog(Muffle(bot))
     
