@@ -28,7 +28,8 @@ class Help(commands.Cog):
                 f"7. `{PREFIX}disconnect` : Disconnect the bot from the voice channel\n"
                 f"8. `{PREFIX}loop on/off` : Loop the current song\n"
                 f"9. `{PREFIX}nightcore on/off` : Apply the nightcore effect to the song (increases speed and pitch)\n"
-                f"10. `{PREFIX}daycore on/off` : Apply the daycore effect to the song (slows down the song)"
+                f"10. `{PREFIX}daycore on/off` : Apply the daycore effect to the song (slows down the song)\n"
+                f"11. `{PREFIX}muffle on/off` : Apply the muffle effect to the song"
             ),
             inline=False
         )
